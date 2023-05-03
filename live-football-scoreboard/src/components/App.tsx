@@ -59,16 +59,21 @@ const inProgressGames = scoreboard.games.filter(
     <Container className="App">
       <h1 className="mt-4 mb-4">Live Football World Cup Scoreboard</h1>
       <Row>
-        <Col xs={12} md={4}>
-          <h3>Started Games</h3>
-          <ListGroup>
-            {startedGames.map((game, index) => (
-              <ListGroup.Item key={index}>
-                {game.homeTeam} {game.homeScore} - {game.awayTeam} {game.awayScore}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </Col>
+      <Col xs={12} md={4}>
+  <h3>Started Games</h3>
+  {startedGames.length > 0 ? (
+    <ListGroup>
+      {startedGames.map((game, index) => (
+        <ListGroup.Item key={index}>
+          {game.homeTeam} {game.homeScore} - {game.awayTeam} {game.awayScore}
+        </ListGroup.Item>
+      ))}
+    </ListGroup>
+  ) : (
+    <p>Game are started and are live</p>
+  )}
+</Col>
+
         <Col xs={12} md={4}>
   <h3>In Progress Games</h3>
   {inProgressGames.length > 0 ? (
