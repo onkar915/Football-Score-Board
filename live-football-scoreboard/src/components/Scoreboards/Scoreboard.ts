@@ -57,7 +57,7 @@ class Scoreboard {
       })
       .map(
         (game) =>
-          `${game.homeTeam} ${game.homeScore} -  ${game.awayScore} ${game.awayTeam}`
+          `${game.homeTeam} ${game.homeScore} - ${game.awayScore} ${game.awayTeam}`
       );
 
     this.updateSummaryCallback(summary);

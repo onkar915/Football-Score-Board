@@ -32,7 +32,7 @@ describe("Scoreboard", () => {
     scoreboard.updateScore(game, 3, 2);
     expect(game.homeScore).toBe(3);
     expect(game.awayScore).toBe(2);
-    expect(summary).toEqual(["TeamA 3 - TeamB 2"]);
+    expect(summary).toEqual(["TeamA 3 - 2 TeamB"]);
   });
 
   it("should finish a game and remove it from the games list", () => {
