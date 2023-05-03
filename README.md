@@ -1,2 +1,0 @@
-# Football-Score-Board-
-App 
