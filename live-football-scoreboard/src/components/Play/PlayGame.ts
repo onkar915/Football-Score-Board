@@ -1,5 +1,4 @@
 
-// src/Game.ts
 class Game {
     homeTeam: string;
     awayTeam: string;
