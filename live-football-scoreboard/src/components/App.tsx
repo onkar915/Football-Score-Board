@@ -70,7 +70,7 @@ const inProgressGames = scoreboard.games.filter(
       ))}
     </ListGroup>
   ) : (
-    <p>Game are started and are live</p>
+    <p>Games are started and are live</p>
   )}
 </Col>
 

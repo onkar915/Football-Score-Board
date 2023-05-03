@@ -1,6 +1,5 @@
-// tests/Scoreboard.test.ts
 import Scoreboard from "../src/components/Scoreboards/Scoreboard";
-import Game from "../src/components/Play/PlayGame";
+
 
 describe("Scoreboard", () => {
   let summary: string[];
