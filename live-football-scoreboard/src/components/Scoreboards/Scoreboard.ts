@@ -55,13 +55,13 @@ class Scoreboard {
         }
         return this.games.indexOf(b) - this.games.indexOf(a);
       })
-      .map((game) => `${game.homeTeam} ${game.homeScore} - ${game.awayTeam} ${game.awayScore}`);
+      .map(
+        (game) =>
+          `${game.homeTeam} ${game.homeScore} -  ${game.awayScore} ${game.awayTeam}`
+      );
 
     this.updateSummaryCallback(summary);
   }
- 
 }
 
 export default Scoreboard;
-
-

@@ -1,4 +1,3 @@
-
 import Scoreboard from "../src/components/Scoreboards/Scoreboard";
 
 describe("App", () => {
@@ -35,7 +34,9 @@ describe("App", () => {
     expect(startedGames).toHaveLength(0);
     expect(inProgressGames).toHaveLength(5);
 
-    const game2InProgress = inProgressGames.find((game) => game.homeTeam === "Spain" && game.awayTeam === "Brazil");
+    const game2InProgress = inProgressGames.find(
+      (game) => game.homeTeam === "Spain" && game.awayTeam === "Brazil"
+    );
     expect(game2InProgress?.homeScore).toBe(10);
     expect(game2InProgress?.awayScore).toBe(2);
   });

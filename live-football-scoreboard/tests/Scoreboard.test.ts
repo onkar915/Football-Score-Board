@@ -1,6 +1,5 @@
 import Scoreboard from "../src/components/Scoreboards/Scoreboard";
 
-
 describe("Scoreboard", () => {
   let summary: string[];
   let updateSummaryCallback: (updatedSummary: string[]) => void;
@@ -59,5 +58,4 @@ describe("Scoreboard", () => {
 
     expect(finishedGames).toEqual([game1, game2, game3]);
   });
-
 });
