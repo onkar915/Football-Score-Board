@@ -1,4 +1,4 @@
-import Game from "../src/components/Play/PlayGame";
+import Game from "../src/components/GamePlay/GamePlay";
 
 describe("Game", () => {
   it("should initialize a game with correct values", () => {

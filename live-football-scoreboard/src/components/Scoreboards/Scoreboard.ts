@@ -1,4 +1,4 @@
-import Game from "../Play/PlayGame";
+import Game from "../GamePlay/GamePlay";
 
 type UpdateSummaryCallback = (summary: string[]) => void;
 

@@ -1,41 +1,45 @@
+/**
+This component represents the main App for the Scoreboard system.
+It initializes a Scoreboard object to keep track of game scores and
+renders GameList components to display games that have started, are in progress,
+and have finished.
+*/
 import React, { useState, useEffect } from "react";
 import Scoreboard from "./Scoreboards/Scoreboard";
+import GameList from "./GameList/GameList";
+import Navbar from "./NavBar/NavBar";
+import Footer from "./Footer/Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Container,
   Row,
   Col,
-  ListGroup,
-  Card,
-  Navbar,
-  Nav,
 } from "react-bootstrap";
 const App: React.FC = () => {
   const [summary, setSummary] = useState<string[]>([]);
   const [scoreboard] = useState<Scoreboard>(new Scoreboard(setSummary));
 
   useEffect(() => {
-    const game1 = scoreboard.startGame("Mexico", "Canada");
-    const game2 = scoreboard.startGame("Spain", "Brazil");
-    const game3 = scoreboard.startGame("Germany", "France");
-    const game4 = scoreboard.startGame("Uruguay", "Italy");
-    const game5 = scoreboard.startGame("Argentina", "Australia");
-
-    const timer1 = setTimeout(() => scoreboard.updateScore(game1, 0, 5), 1000);
-    const timer2 = setTimeout(() => scoreboard.updateScore(game2, 10, 2), 2000);
-    const timer3 = setTimeout(() => scoreboard.updateScore(game3, 2, 2), 3000);
-    const timer4 = setTimeout(() => scoreboard.updateScore(game4, 6, 6), 4000);
-    const timer5 = setTimeout(() => scoreboard.updateScore(game5, 3, 1), 5000);
-
+    const gameData = [
+      { homeTeam: "Mexico", awayTeam: "Canada", score: [0, 5], delay: 1000 },
+      { homeTeam: "Spain", awayTeam: "Brazil", score: [10, 2], delay: 2000 },
+      { homeTeam: "Germany", awayTeam: "France", score: [2, 2], delay: 3000 },
+      { homeTeam: "Uruguay", awayTeam: "Italy", score: [6, 6], delay: 4000 },
+      { homeTeam: "Argentina", awayTeam: "Australia", score: [3, 1], delay: 5000 },
+    ];
+  
+    const gameTimers = gameData.map((data) => {
+      const game = scoreboard.startGame(data.homeTeam, data.awayTeam);
+      const [homeScore, awayScore] = data.score;
+      const timer = setTimeout(() => scoreboard.updateScore(game, homeScore, awayScore), data.delay);
+      return timer;
+    });
+  
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-      clearTimeout(timer5);
+      gameTimers.forEach((timer) => clearTimeout(timer));
     };
   }, [scoreboard]);
-
+  
   const startedGames = scoreboard.games.filter(
     (game) => game.homeScore === 0 && game.awayScore === 0
   );
@@ -45,118 +49,37 @@ const App: React.FC = () => {
   );
 
   const finishedGames = summary
-    .filter((game) => {
-      const [homeTeam, homeScore, awayScore, awayTeam] = game.split(" ");
-      return homeScore !== "0" || awayScore !== "0";
-    })
-    .map((game) => {
-      const [homeTeam, homeScore, awayScore, awayTeam] = game.split(" ");
-      return `${homeTeam} ${homeScore} - ${awayScore} ${awayTeam} `;
-    });
+  .filter((game) => {
+    const [homeTeam, homeScore, awayScore, ...awayTeam] = game.split(" ");
+    return homeScore !== "0" || awayScore !== "0";
+  })
+  .map((game) => {
+    const [homeTeam, homeScore, awayScore, ...awayTeam] = game.split(" ");
+    return `${homeTeam} ${homeScore} - ${awayScore} ${awayTeam.join(" ")} `;
+  });
 
-  return (
-    <div>
-      <Navbar expand="lg" style={{ backgroundColor: "#e3f2fd" }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            <b>Live Football World Cup Scoreboard</b>
-          </Navbar.Brand>
 
-          <i className="fas fa-futbol" style={{ fontSize: "24px" }}></i>
+    return (
+      <div>
+         <Navbar />
+        <Container className="App">
+          <h1 className="mt-4 mb-4 d-flex justify-content-center"></h1>
+          <Row>
+            <Col xs={12} md={4}>
+              <GameList title="Started Games" games={startedGames} />
+            </Col>
+            <Col xs={12} md={4}>
+              <GameList title="In Progress Games" games={inProgressGames} />
+            </Col>
+            <Col xs={12} md={4}>
+              <GameList title="Summary" games={[]} summary={finishedGames} />
+            </Col>
+          </Row>
         </Container>
-      </Navbar>
-      <Container className="App">
-        <h1 className="mt-4 mb-4 d-flex justify-content-center"></h1>
-        <Row>
-          <Col xs={12} md={4}>
-            <Card>
-              <Card.Body>
-                <Card.Title className=" d-flex justify-content-center">
-                  Started Games
-                </Card.Title>
-                {startedGames.length > 0 ? (
-                  <ListGroup>
-                    {startedGames.map((game, index) => (
-                      <ListGroup.Item
-                        key={index}
-                        className="d-flex justify-content-center"
-                      >
-                        <div className="number">{index + 1}.</div>
-                        <i className="fas fa-futbol p-2"></i>
-                        {game.homeTeam} {game.homeScore} - {game.awayScore}{" "}
-                        {game.awayTeam}{" "}
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                ) : (
-                  <p className=" d-flex justify-content-center">
-                    Games are started and are live
-                  </p>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col xs={12} md={4}>
-            <Card>
-              <Card.Body>
-                <Card.Title className=" d-flex justify-content-center">
-                  In Progress Games
-                </Card.Title>
-                {inProgressGames.length > 0 ? (
-                  <ListGroup>
-                    {inProgressGames.map((game, index) => (
-                      <ListGroup.Item
-                        key={index}
-                        className=" d-flex justify-content-center"
-                      >
-                        <i className="fas fa-futbol p-2 "></i>
-                        <div className="number">{index + 1}.</div>
-                        {game.homeTeam} {game.homeScore} - {game.awayScore}{" "}
-                        {game.awayTeam}
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                ) : (
-                  <p className=" d-flex justify-content-center">
-                    No games in progress
-                  </p>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col xs={12} md={4}>
-            <Card>
-              <Card.Body>
-                <Card.Title className=" d-flex justify-content-center">
-                  Summary
-                </Card.Title>
-                <ListGroup>
-                  {summary.map((gameSummary, index) => (
-                    <ListGroup.Item
-                      key={index}
-                      className=" d-flex justify-content-center"
-                    >
-                      <i className="fas fa-futbol p-2"></i>
-                      <div className="number">{index + 1}.</div>
-                      {gameSummary}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-      <footer
-        className=" text-center text-lg-start fixed-bottom"
-        style={{ backgroundColor: "#e3f2fd" }}
-      >
-        <div className="text-center p-3">Task @2023</div>
-      </footer>
-    </div>
-  );
+        <Footer />
+      </div>
+    );
+    
 };
 
 export default App;
